@@ -39,9 +39,6 @@ Logger logger = Logger.getLogger(getClass().getName());
         
 
     }
-
- 
-
     /**
      * Returns a short description of the servlet.
      *
