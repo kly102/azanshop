@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
-import model.Product;
 
 /**
  *
@@ -22,140 +21,130 @@ import model.Product;
  */
 public class AcountDBContext extends DBContext {
 
+    private static final String SELECT_ACCOUNT_QUERY = "SELECT * FROM Account WHERE isAdmin != 1";
+    private static final String SELECT_ACCOUNT_BY_PAGE_QUERY = "SELECT * FROM Account WHERE isAdmin != 1 ORDER BY uID OFFSET (?-1)*? ROWS FETCH NEXT ? ROWS ONLY";
+    private static final String LOGIN_QUERY = "SELECT * FROM Account WHERE [user] = ? AND pass = ?";
+    private static final String CHECK_ACCOUNT_EXIST_QUERY = "SELECT * FROM Account WHERE [user] = ?";
+    private static final String INSERT_ACCOUNT_QUERY = "INSERT INTO Account ([user], [pass], [isSell], [isAdmin], [active]) VALUES (?, ?, 0, 0, 1)";
+    private static final String UPDATE_ACCOUNT_QUERY = "UPDATE Account SET active = ? WHERE uId = ?";
+    private static final String UPDATE_PASSWORD_QUERY = "UPDATE Account SET pass = ? WHERE [user] = ?";
+     private static final String SELECT_ACOUNT_BY_ID ="select *  from Account where uID = ?";
+
     public List<Account> getAllAccount() {
         List<Account> list = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Account where isAdmin != 1";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
+
+        try (PreparedStatement stm = connection.prepareStatement(SELECT_ACCOUNT_QUERY); ResultSet rs = stm.executeQuery()) {
+
             while (rs.next()) {
                 Account account = new Account();
-                account.setUid(rs.getInt(1));
-                account.setUser(rs.getString(2));
-                account.setPass(rs.getString(3));
-                account.setIsSell(rs.getInt(4));
-                account.setIsAdmin(rs.getInt(5));
-                account.setActive(rs.getBoolean(6));
-
+                account.setUid(rs.getInt("uID"));
+                account.setUser(rs.getString("user"));
+                account.setPass(rs.getString("pass"));
+                account.setIsSell(rs.getInt("isSell"));
+                account.setIsAdmin(rs.getInt("isAdmin"));
+                account.setActive(rs.getBoolean("active"));
                 list.add(account);
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(AcountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return list;
     }
 
     public List<Account> getAllAccountByPage(int page, int pageSize) {
         List<Account> list = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Account where isAdmin != 1"
-                    + " order by uID\n"
-                    + "offset (?-1)*? row fetch next ? rows only";
-            PreparedStatement stm = connection.prepareStatement(sql);
+
+        try (PreparedStatement stm = connection.prepareStatement(SELECT_ACCOUNT_BY_PAGE_QUERY)) {
             stm.setInt(1, page);
             stm.setInt(2, pageSize);
             stm.setInt(3, pageSize);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account account = new Account();
-                account.setUid(rs.getInt(1));
-                account.setUser(rs.getString(2));
-                account.setPass(rs.getString(3));
-                account.setIsSell(rs.getInt(4));
-                account.setIsAdmin(rs.getInt(5));
-                account.setActive(rs.getBoolean(6));
 
-                list.add(account);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    Account account = new Account();
+                    account.setUid(rs.getInt("uID"));
+                    account.setUser(rs.getString("user"));
+                    account.setPass(rs.getString("pass"));
+                    account.setIsSell(rs.getInt("isSell"));
+                    account.setIsAdmin(rs.getInt("isAdmin"));
+                    account.setActive(rs.getBoolean("active"));
+                    list.add(account);
+                }
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(AcountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return list;
     }
 
     public int getTotalAccount() {
-        List<Account> list = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Account where isAdmin != 1";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account account = new Account();
-                account.setUid(rs.getInt(1));
-                account.setUser(rs.getString(2));
-                account.setPass(rs.getString(3));
-                account.setIsSell(rs.getInt(4));
-                account.setIsAdmin(rs.getInt(5));
-                account.setActive(rs.getBoolean(6));
+        int totalCount = 0;
 
-                list.add(account);
+        try (PreparedStatement stm = connection.prepareStatement(SELECT_ACCOUNT_QUERY); ResultSet rs = stm.executeQuery()) {
+
+            while (rs.next()) {
+                totalCount++;
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(AcountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list.size();
+
+        return totalCount;
     }
 
     public Account login(String user, String pass) {
-        try {
-            String sql = "SELECT * FROM Account where [user] = ? and pass = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        Account account = null;
+
+        try (PreparedStatement stm = connection.prepareStatement(LOGIN_QUERY)) {
             stm.setString(1, user);
             stm.setString(2, pass);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account a = new Account();
-                a.setUid(rs.getInt(1));
-                a.setUser(rs.getString(2));
-                a.setPass(rs.getString(3));
-                a.setIsSell(rs.getInt(4));
-                a.setIsAdmin(rs.getInt(5));
-                a.setActive(rs.getBoolean(6));
-                return a;
+
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    account = new Account();
+                    account.setUid(rs.getInt("uID"));
+                    account.setUser(rs.getString("user"));
+                    account.setPass(rs.getString("pass"));
+                    account.setIsSell(rs.getInt("isSell"));
+                    account.setIsAdmin(rs.getInt("isAdmin"));
+                    account.setActive(rs.getBoolean("active"));
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AcountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+
+        return account;
     }
 
     public Account checkAccountExist(String user) {
-        try {
-            String sql = "SELECT * FROM Account where [user] = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        Account account = null;
+
+        try (PreparedStatement stm = connection.prepareStatement(CHECK_ACCOUNT_EXIST_QUERY)) {
             stm.setString(1, user);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account a = new Account();
-                a.setUid(rs.getInt(1));
-                a.setUser(rs.getString(2));
-                a.setPass(rs.getString(3));
-                a.setIsSell(rs.getInt(4));
-                a.setIsAdmin(rs.getInt(5));
-                a.setActive(rs.getBoolean(6));
-                return a;
+
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    account = new Account();
+                    account.setUid(rs.getInt(1));
+                    account.setUser(rs.getString(2));
+                    account.setPass(rs.getString(3));
+                    account.setIsSell(rs.getInt(4));
+                    account.setIsAdmin(rs.getInt(5));
+                    account.setActive(rs.getBoolean(6));
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AcountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+
+        return account;
     }
 
     public void insertAccount(String user, String pass) {
-        try {
-            String sql = "INSERT INTO [Account]\n"
-                    + "           ([user]\n"
-                    + "           ,[pass]\n"
-                    + "           ,[isSell]\n"
-                    + "           ,[isAdmin]\n"
-                    + "           ,[active])\n"
-                    + "     VALUES\n"
-                    + "           (?\n"
-                    + "           ,?\n"
-                    + "           ,0\n"
-                    + "           ,0\n"
-                    + "           ,1)";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        try (PreparedStatement stm = connection.prepareStatement(INSERT_ACCOUNT_QUERY)) {
             stm.setString(1, user);
             stm.setString(2, pass);
             stm.executeUpdate();
@@ -165,42 +154,35 @@ public class AcountDBContext extends DBContext {
     }
 
     public Account getAccountById(int accountId) {
-        try {
-            String sql = "select *  from Account where uID = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, accountId);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
+    try (PreparedStatement stm = connection.prepareStatement(SELECT_ACOUNT_BY_ID)) {
+        stm.setInt(1, accountId);
+        try (ResultSet rs = stm.executeQuery()) {
+            if (rs.next()) {
                 Account account = new Account();
-                account.setUid(rs.getInt(1));
-                account.setUser(rs.getString(2));
-                account.setPass(rs.getString(3));
-                account.setIsSell(rs.getInt(4));
-                account.setIsAdmin(rs.getInt(5));
-                account.setActive(rs.getBoolean(6));
+                account.setUid(rs.getInt("uID"));
+                account.setUser(rs.getString("username"));
+                account.setPass(rs.getString("password"));
+                account.setIsSell(rs.getInt("isSeller"));
+                account.setIsAdmin(rs.getInt("isAdmin"));
+                account.setActive(rs.getBoolean("active"));
 
                 return account;
             }
-        } catch (Exception ex) {
-            Logger.getLogger(AcountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+    } catch (SQLException ex) {
+        Logger.getLogger(AcountDBContext.class.getName()).log(Level.SEVERE, null, ex);
     }
+    return null;
+}
 
     public void updateAccount(Account account) {
-
-        try {
-            String sql = "UPDATE [Account]\n"
-                    + "   SET [active] = ?\n"
-                    + " WHERE uId = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        try (PreparedStatement stm = connection.prepareStatement(UPDATE_ACCOUNT_QUERY)) {
             stm.setBoolean(1, account.isActive());
             stm.setInt(2, account.getUid());
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(AcountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     public static void main(String[] args) {
@@ -210,11 +192,7 @@ public class AcountDBContext extends DBContext {
     }
 
     public void UpDatePassWord(String pass, String user) {
-        try {
-            String sql = "UPDATE [Account]\n"
-                    + "   SET [pass] = ?\n"
-                    + " WHERE [user] = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        try (PreparedStatement stm = connection.prepareStatement(UPDATE_PASSWORD_QUERY)) {
             stm.setString(1, pass);
             stm.setString(2, user);
             stm.executeUpdate();
