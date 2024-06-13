@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/AzanShop/src/java/controller/AddProductController.java</file>
+            <file>file:/D:/AzanShop/src/java/controller/OrderUserManager.java</file>
+            <file>file:/D:/AzanShop/web/META-INF/context.xml</file>
+            <file>file:/D:/AzanShop/src/java/model/Product.java</file>
+            <file>file:/D:/AzanShop/src/java/controller/AddToCartController.java</file>
+            <file>file:/D:/AzanShop/nbproject/build-impl.xml</file>
+            <file>file:/D:/AzanShop/src/java/controller/authentication/LoginController.java</file>
+            <file>file:/D:/AzanShop/src/java/controller/manager/ManagerController.java</file>
+            <file>file:/D:/AzanShop/src/java/context/DBContext.java</file>
+            <file>file:/D:/AzanShop/src/java/dal/CategoryDBContext.java</file>
+            <file>file:/D:/AzanShop/src/java/controller/CheckOutController.java</file>
+            <file>file:/D:/AzanShop/web/WEB-INF/web.xml</file>
+            <file>file:/D:/AzanShop/src/java/dal/AcountDBContext.java</file>
+            <file>file:/D:/AzanShop/src/java/dal/OrderDetailDBcontext.java</file>
+            <file>file:/D:/AzanShop/src/java/controller/authentication/ForgetPasswordController.java</file>
+            <file>file:/D:/AzanShop/src/java/dal/GroupFavoriteDBContext.java</file>
+            <file>file:/D:/AzanShop/src/java/controller/CartController.java</file>
+            <file>file:/D:/AzanShop/src/java/dal/OrderDBcontext.java</file>
+            <file>file:/D:/AzanShop/web/WEB-INF/glassfish-web.xml</file>
+            <file>file:/D:/AzanShop/src/java/controller/manager/favManager.java</file>
+        </group>
+    </open-files>
+</project-private>
