@@ -40,10 +40,7 @@ Logger logger = Logger.getLogger(getClass().getName());
 
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
+ 
 
     /**
      * Returns a short description of the servlet.
