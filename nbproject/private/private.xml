@@ -3,15 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/AzanShop3/src/java/controller/manager/ManagerController.java</file>
-            <file>file:/D:/AzanShop3/src/java/controller/DeleteCategory.java</file>
-            <file>file:/D:/AzanShop3/src/java/controller/manager/EditOrderManager.java</file>
-            <file>file:/D:/AzanShop3/src/java/controller/ManagerOrderUser.java</file>
-            <file>file:/D:/AzanShop3/src/java/controller/manager/ManagerAccountController.java</file>
-            <file>file:/D:/AzanShop3/src/java/controller/manager/FavoriteController.java</file>
-            <file>file:/D:/AzanShop3/src/java/dal/AcountDBContext.java</file>
-            <file>file:/D:/AzanShop3/src/java/controller/manager/ManagerCategoryController.java</file>
-            <file>file:/D:/AzanShop3/src/java/controller/manager/ManagerOrder.java</file>
+            <file>file:/C:/Users/acer/Desktop/SWT/azanshop/src/java/dal/AcountDBContext.java</file>
+            <file>file:/C:/Users/acer/Desktop/SWT/azanshop/src/java/context/DBContext.java</file>
+            <file>file:/C:/Users/acer/Desktop/SWT/azanshop/src/java/controller/ManagerOrderUser.java</file>
+            <file>file:/C:/Users/acer/Desktop/SWT/azanshop/src/java/model/Product.java</file>
+            <file>file:/C:/Users/acer/Desktop/SWT/azanshop/src/java/controller/CheckOutController.java</file>
         </group>
     </open-files>
 </project-private>

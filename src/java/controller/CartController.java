@@ -37,14 +37,14 @@ public class CartController extends BaseRequiredAuthenController {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getSession().getAttribute("acc") != null) {
-            /* TODO output your page here. You may use following sample code. */
+            
             HttpSession session = request.getSession();
             Map<Integer, Cart> carts = (Map<Integer, Cart>) session.getAttribute("carts");
             if (carts == null) {
                 carts = new LinkedHashMap<>();
             }
 
-            //tinh tong tien
+            
             double totalMoney = 0;
             for (Map.Entry<Integer, Cart> entry : carts.entrySet()) {
                 Cart cart = entry.getValue();
