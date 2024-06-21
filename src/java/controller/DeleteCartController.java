@@ -38,7 +38,7 @@ public class DeleteCartController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             if (request.getSession().getAttribute("acc") != null) {
-                /* TODO output your page here. You may use following sample code. */
+
                 int productId = Integer.parseInt(request.getParameter("productId"));
 
                 HttpSession session = request.getSession();

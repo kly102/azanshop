@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.logging.Logger;
 import model.Account;
 import model.Category;
 import model.GroupFavorite;
@@ -72,7 +73,7 @@ public class HomeController extends HttpServlet {
         
         if (request.getSession().getAttribute("acc") != null) {
             Account account = (Account)request.getSession().getAttribute("acc") ;
-            System.out.println(account.getUid());
+            Logger.info("User ID: {}", account.getUid());
             ArrayList<GroupFavorite> listGroupFavorite = new GroupFavoriteDBContext().getAllByIdUser(account.getUid());
              request.setAttribute("listGroupFavorite", listGroupFavorite);
         }
